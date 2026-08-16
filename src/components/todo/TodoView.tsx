@@ -4,8 +4,8 @@ import { useState, type FormEvent, type KeyboardEvent } from "react";
 
 import type { Todo, TodoFilter } from "./types";
 
-type TodoViewProps = {
-  todos: Todo[];
+export type TodoViewProps = {
+  readonly todos: readonly Todo[];
   totalCount: number;
   activeCount: number;
   currentDate: string;
@@ -71,15 +71,22 @@ export function TodoView({
   }
 
   function handleEditKeyDown(event: KeyboardEvent<HTMLInputElement>, id: string) {
-    if (event.key === "Enter") finishEditing(id);
+    if (event.key === "Enter") {
+      event.preventDefault();
+      finishEditing(id);
+    }
     if (event.key === "Escape") {
+      event.preventDefault();
       setEditingId(null);
       setEditingTitle("");
     }
   }
 
   return (
-    <section className="mx-auto flex min-h-[calc(100vh-2rem)] w-full max-w-3xl flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60 sm:min-h-0">
+    <section
+      aria-busy={loading}
+      className="mx-auto flex min-h-[calc(100vh-2rem)] w-full max-w-3xl flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60 sm:min-h-0"
+    >
       <header className="bg-gradient-to-br from-blue-700 to-blue-500 px-5 py-7 text-white sm:px-8 sm:py-9">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
@@ -106,6 +113,7 @@ export function TodoView({
               onChange={(event) => setNewTitle(event.target.value)}
               placeholder="タスクを追加して Enter"
               autoComplete="off"
+              disabled={loading}
             />
           </div>
         </form>
@@ -137,7 +145,7 @@ export function TodoView({
           </p>
         </div>
 
-        <div className="min-h-14" aria-live="polite" aria-atomic="true">
+        <div aria-live="polite" aria-atomic="true">
           {loading && (
             <div className="my-4 flex items-center gap-3 rounded-xl bg-blue-50 px-4 py-3 text-sm font-medium text-blue-700">
               <span className="size-4 animate-spin rounded-full border-2 border-blue-200 border-t-blue-700" aria-hidden="true" />

@@ -14,3 +14,15 @@ body {
   background: #f8fafc;
   color: #0f172a;
 }
+
+/* 学習メモ: 指示の要点 - OSで動きを減らす設定を選んだ利用者には、ローディング表示を静止させる。 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

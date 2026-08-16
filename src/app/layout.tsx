@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { LearningShell } from "@/components/layout/LearningShell";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -9,7 +10,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ja">
-      <body>{children}</body>
+      <body>
+        <LearningShell>{children}</LearningShell>
+      </body>
     </html>
   );
 }
